@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psixologik testlar</title>
+
+<style>
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#eef3f8;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.container{
+    background:#ffffff;
+    padding:25px;
+    border-radius:12px;
+    max-width:600px;
+    width:100%;
+    border:1px solid #dce3ec;
+}
+
+h1{
+    color:#1a3d7c;
+    text-align:center;
+    margin-bottom:15px;
+    font-size:24px;
+}
+
+p{
+    font-size:16px;
+    color:#222;
+    line-height:1.6;
+    text-align:center;
+}
+
+button{
+    display:block;
+    width:100%;
+    margin:10px 0;
+    padding:14px;
+    font-size:16px;
+    background:#1a73e8;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+button:active{
+    transform:scale(0.98);
+}
+
+#classes{
+    display:none;
+}
+
+.footer{
+    margin-top:20px;
+    text-align:center;
+    font-size:14px;
+    color:#555;
+}
+
+/* 📱 Telefon uchun maxsus */
+@media (max-width:480px){
+    h1{ font-size:20px; }
+    p{ font-size:15px; }
+    button{ font-size:15px; padding:13px; }
+}
+</style>
+</head>
+
+<body>
+<div id="result" class="result-box"></div>
+
+<div class="container">
+
+    <div id="start">
+        <h1>Psixologik testlar</h1>
+        <p>
+            Ushbu testlar <b>34-maktab o‘quvchisi Xamroyev Abror</b>
+            tomonidan tayyorlangan.
+        </p>
+        <p>
+            Testlar <b>6–11-sinf</b> o‘quvchilari uchun mo‘ljallangan.
+        </p>
+        <button onclick="showClasses()">Boshlash</button>
+    </div>
+
+    <div id="classes">
+        <h1>Sinfni tanlang</h1>
+        <button onclick="go('6.html')">6-sinf</button>
+        <button onclick="go('7.html')">7-sinf</button>
+        <button onclick="go('8.html')">8-sinf</button>
+        <button onclick="go('9.html')">9-sinf</button>
+        <button onclick="go('10.html')">10-sinf</button>
+        <button onclick="go('11.html')">11-sinf</button>
+    </div>
+
+    <div class="footer">
+        Muallif: Xamroyev Abror
+    </div>
+
+</div>
+
+<script>
+function showClasses(){
+    document.getElementById("start").style.display="none";
+    document.getElementById("classes").style.display="block";
+}
+function go(page){
+    window.location.href = page;
+}
+</script>
+
+</body>
+</html>
