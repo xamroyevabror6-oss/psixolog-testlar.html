@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin panel</title>
+</head>
+<body>
+<h2>TEST NATIJALARI (FAQAT ADMIN)</h2>
+<div id="list"></div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+auth.onAuthStateChanged(async user => {
+  if (!user) {
+    alert("Login qilinmagan");
+    return;
+  }
+
+  const snap = await getDocs(collection(db, "test_results"));
+  snap.forEach(doc => {
+    const d = doc.data();
+    list.innerHTML += `
+      <p>
+        <b>Ball:</b> ${d.ball} <br>
+        <b>Xulosa:</b> ${d.xulosa} <br>
+        <b>Sana:</b> ${d.sana}
+      </p><hr>
+    `;
+  });
+});
+</script>
+</body>
+</html>

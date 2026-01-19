@@ -1,125 +1,724 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Psixologik testlar</title>
-
-<style>
-*{ box-sizing:border-box; }
-
-body{
-    margin:0;
-    min-height:100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    background:#eef3f8;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:15px;
-}
-
-.container{
-    background:#ffffff;
-    padding:25px;
-    border-radius:12px;
-    max-width:600px;
-    width:100%;
-    border:1px solid #dce3ec;
-}
-
-h1{
-    color:#1a3d7c;
-    text-align:center;
-    margin-bottom:15px;
-    font-size:24px;
-}
-
-p{
-    font-size:16px;
-    color:#222;
-    line-height:1.6;
-    text-align:center;
-}
-
-button{
-    display:block;
-    width:100%;
-    margin:10px 0;
-    padding:14px;
-    font-size:16px;
-    background:#1a73e8;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-button:active{
-    transform:scale(0.98);
-}
-
-#classes{
-    display:none;
-}
-
-.footer{
-    margin-top:20px;
-    text-align:center;
-    font-size:14px;
-    color:#555;
-}
-
-/* 📱 Telefon uchun maxsus */
-@media (max-width:480px){
-    h1{ font-size:20px; }
-    p{ font-size:15px; }
-    button{ font-size:15px; padding:13px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Test</title>
 </head>
-
 <body>
-<div id="result" class="result-box"></div>
 
-<div class="container">
+<h2>Psixologik test</h2>
 
-    <div id="start">
-        <h1>Psixologik testlar</h1>
-        <p>
-            Ushbu testlar <b>34-maktab o‘quvchisi Xamroyev Abror</b>
-            tomonidan tayyorlangan.
-        </p>
-        <p>
-            Testlar <b>6–11-sinf</b> o‘quvchilari uchun mo‘ljallangan.
-        </p>
-        <button onclick="showClasses()">Boshlash</button>
-    </div>
+<button id="finishBtn">Testni tugatish</button>
 
-    <div id="classes">
-        <h1>Sinfni tanlang</h1>
-        <button onclick="go('6.html')">6-sinf</button>
-        <button onclick="go('7.html')">7-sinf</button>
-        <button onclick="go('8.html')">8-sinf</button>
-        <button onclick="go('9.html')">9-sinf</button>
-        <button onclick="go('10.html')">10-sinf</button>
-        <button onclick="go('11.html')">11-sinf</button>
-    </div>
+<script type="module">
+import { db } from "./firebase.js";
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    <div class="footer">
-        Muallif: Xamroyev Abror
-    </div>
+document.getElementById("finishBtn").onclick = async () => {
+  const ball = 15;
+  let xulosa = "O‘rtacha holat";
 
-</div>
+  await addDoc(collection(db, "test_results"), {
+    ball,
+    xulosa,
+    sana: new Date().toLocaleString()
+  });
 
-<script>
-function showClasses(){
-    document.getElementById("start").style.display="none";
-    document.getElementById("classes").style.display="block";
-}
-function go(page){
-    window.location.href = page;
+  alert("Test yakunlandi");
+};
+</script>
+
+</body>
+</html>
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test</title>
+</head>
+<body>
+
+<h2>Psixologik test</h2>
+
+<!-- bu yerga test savollari bo‘ladi -->
+<button id="finishBtn">Testni tugatish</button>
+<script type="module">
+  <script type="module">
+import { auth, db } from "./firebase.js";
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+console.log("Kod ishlayapti");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const finishBtn = document.getElementById("finishBtn");
+  console.log("finishBtn:", finishBtn);
+
+  finishBtn.onclick = async () => {
+    console.log("finish bosildi");
+
+    if (!auth.currentUser) {
+      alert("Login qilinmagan!");
+      return;
+    }
+
+    await addDoc(collection(db, "test_results"), {
+      userId: auth.currentUser.uid,
+      ball: 10,
+      xulosa: "Test natijasi",
+      sana: new Date().toLocaleString()
+    });
+
+    alert("Saqlandi");
+  };
+});
+</script>
+
+import { auth, db } from "./firebase.js";
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+finishBtn.onclick = async () => {
+  console.log("finish bosildi");
+
+  if (!auth.currentUser) {
+    alert("Login qilinmagan!");
+    return;
+  }
+
+  await addDoc(collection(db, "test_results"), {
+    userId: auth.currentUser.uid,
+    ball: 10,
+    xulosa: "Test natijasi",
+    sana: new Date().toLocaleString()
+  });
+
+  alert("Saqlandi");
+};
+</script>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+let ball = 0;
+
+// misol uchun test tugagach ball hisoblanadi
+finishBtn.onclick = async () => {
+  // bu yerda ball hisoblanadi (misol)
+  ball = 15;
+  let xulosa = "";
+
+  if (ball <= 10) xulosa = "Siz juda yaxshi holatda";
+  else if (ball <= 20) xulosa = "Siz o‘rtacha holatda";
+  else xulosa = "Sizga dam olish kerak";
+
+  await addDoc(collection(db, "test_results"), {
+    userId: auth.currentUser.uid,
+    ball: ball,
+    xulosa: xulosa,
+    sana: new Date().toLocaleString()
+  });
+
+  alert("Test natijasi saqlandi");
+};
+</script>
+
+</body>
+</html>
+
+<html>
+<body>
+<h2>Ishimni kiritish</h2>
+
+<textarea id="work"></textarea>
+<button onclick="saveWork()">Saqlash</button>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { addDoc, collection } from 
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+window.saveWork = async () => {
+  await addDoc(collection(db, "works"), {
+    text: work.value,
+    userId: auth.currentUser.uid,
+    time: new Date()
+  });
+  alert("Saqlandi");
+};
+</script>
+<script type="module">
+import { auth } from "./firebase.js";
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("Firebase ulandi:", user.email);
+  } else {
+    console.log("Login qilinmagan");
+  }
+});
+</script>
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+function saveResult(ball, xulosa) {
+  addDoc(collection(db, "test_results"), {
+    userId: auth.currentUser.uid,
+    ball: ball,
+    xulosa: xulosa,
+    sana: new Date().toLocaleString()
+  })
+  .then(() => alert("Natija saqlandi"))
+  .catch(err => alert(err.message));
 }
 </script>
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Psixologik Test - Temurbeklar Maktabi</title>
+  <style>
+    :root{
+      --main: #1e3a8a; /* ko‘k */
+      --main2: #22c55e; /* yashil */
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: 'Arial', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .header{
+      background: linear-gradient(135deg, var(--main), var(--main2));
+      color: white;
+      padding: 20px 20px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 15px;
+      position: sticky;
+      top:0;
+      z-index: 100;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+    }
+
+    .logo{
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+
+    .title{
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle{
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      margin-top: 4px;
+    }
+
+    .author{
+      font-size: 14px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.18);
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .container{
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    }
+
+    .card h3{
+      margin: 0;
+      font-size: 18px;
+      color: var(--main);
+    }
+
+    .card p{
+      color: var(--muted);
+      margin: 10px 0 0;
+      line-height: 1.5;
+    }
+
+    .btn{
+      display:inline-block;
+      margin-top: 15px;
+      padding: 12px 18px;
+      border:none;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight: 700;
+      letter-spacing: .3px;
+      color: white;
+    }
+
+    .btn-primary{ background: var(--main); }
+    .btn-secondary{ background: var(--main2); }
+    .btn-warning{ background: #f59e0b; }
+    .btn-danger{ background: #ef4444; }
+
+    .hide{ display:none; }
+
+    .test-area{
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      margin-top: 20px;
+    }
+
+    .qtop{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .qnum{
+      font-weight: 700;
+      color: var(--main);
+    }
+
+    .question{
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .answers{
+      margin-top: 15px;
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .answers button{
+      padding: 14px 16px;
+      border:none;
+      border-radius: 14px;
+      background: #f3f4f6;
+      cursor:pointer;
+      font-weight: 700;
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .answers button:hover{
+      transform: translateY(-2px);
+      background: #e5e7eb;
+    }
+
+    .result{
+      margin-top: 20px;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .result h2{
+      margin:0;
+      color: var(--main);
+    }
+
+    .wrong{
+      color: #ef4444;
+    }
+
+    .correct{
+      color: #22c55e;
+    }
+
+    .wrong ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .answers{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="logo">TM</div>
+      <div>
+        <div class="title">Temurbeklar Maktabi</div>
+        <div class="subtitle">Ichki ishlar akademik litseyiga tayyorlovchi testlar</div>
+      </div>
+    </div>
+    <div class="author">Muallif: Xamroyev Abror Baxtiyor o‘g‘li</div>
+  </div>
+
+  <div class="container">
+    <!-- MENU -->
+    <div id="menu" class="grid">
+      <div class="card">
+        <h3>1) E’tibor testi</h3>
+        <p>50 ta savol. Diqqat, tezkorlik va mantiqiy fikrlashni tekshiradi.</p>
+        <button class="btn btn-primary" onclick="startTest('attention')">Testni boshlash</button>
+      </div>
+      <div class="card">
+        <h3>2) Mantiq testi</h3>
+        <p>50 ta savol. Mantiqiy ketma-ketlik va hisoblash qobiliyatini o‘lchaydi.</p>
+        <button class="btn btn-secondary" onclick="startTest('logic')">Testni boshlash</button>
+      </div>
+      <div class="card">
+        <h3>3) Shaxsiylik testi</h3>
+        <p>50 ta savol. Big Five asosida shaxsiy xususiyatlaringizni aniqlaydi.</p>
+        <button class="btn btn-warning" onclick="startTest('personality')">Testni boshlash</button>
+      </div>
+      <div class="card">
+        <h3>4) Vaziyatli etika testi</h3>
+        <p>20 ta savol. Ichki ishlar tizimidagi vaziyatlarda to‘g‘ri qaror qabul qilishni tekshiradi.</p>
+        <button class="btn btn-danger" onclick="startTest('ethics')">Testni boshlash</button>
+      </div>
+    </div>
+
+    <!-- TEST -->
+    <div id="test" class="hide test-area">
+      <div class="qtop">
+        <div class="qnum" id="qnum"></div>
+        <div id="timer" class="qnum"></div>
+      </div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result" class="hide result">
+      <h2>Natija</h2>
+      <p id="score"></p>
+      <p id="percent"></p>
+      <div id="wrongList"></div>
+      <button class="btn btn-primary" onclick="resetAll()">Boshiga qaytish</button>
+    </div>
+  </div>
+
+<script>
+  // 1) E'tibor testi (50 savol)
+  const attention = [
+    { q:"1) 2, 4, 6, 8, ? ", a:["9","10","11","12"], c:1 },
+    { q:"2) 1, 3, 5, 7, ? ", a:["8","9","10","11"], c:1 },
+    { q:"3) 5, 10, 15, 20, ? ", a:["21","22","23","25"], c:3 },
+    { q:"4) 2, 6, 12, 20, ? ", a:["26","28","30","32"], c:1 },
+    { q:"5) 3, 6, 9, 12, ? ", a:["13","14","15","16"], c:2 },
+    { q:"6) 1, 2, 4, 8, ? ", a:["10","12","14","16"], c:3 },
+    { q:"7) 7, 14, 21, 28, ? ", a:["30","32","34","35"], c:3 },
+    { q:"8) 1, 4, 9, 16, ? ", a:["20","24","25","26"], c:2 },
+    { q:"9) 2, 5, 10, 17, ? ", a:["24","25","26","27"], c:1 },
+    { q:"10) 3, 7, 13, 21, ? ", a:["28","29","30","31"], c:1 },
+    { q:"11) 1, 1, 2, 3, 5, ? ", a:["6","7","8","9"], c:1 },
+    { q:"12) 2, 4, 8, 16, ? ", a:["18","20","24","32"], c:3 },
+    { q:"13) 5, 8, 12, 17, ? ", a:["21","22","23","24"], c:0 },
+    { q:"14) 3, 8, 15, 24, ? ", a:["33","34","35","36"], c:0 },
+    { q:"15) 10, 9, 8, 7, ? ", a:["5","6","7","8"], c:1 },
+    { q:"16) 2, 4, 8, 14, ? ", a:["18","20","22","24"], c:2 },
+    { q:"17) 4, 7, 10, 13, ? ", a:["15","16","17","18"], c:2 },
+    { q:"18) 1, 3, 6, 10, ? ", a:["13","14","15","16"], c:1 },
+    { q:"19) 2, 6, 12, 20, ? ", a:["26","28","30","32"], c:1 },
+    { q:"20) 3, 6, 12, 24, ? ", a:["30","36","40","48"], c:3 },
+    { q:"21) 5, 10, 20, 40, ? ", a:["60","70","80","80"], c:2 },
+    { q:"22) 2, 3, 5, 7, 11, ? ", a:["12","13","14","15"], c:1 },
+    { q:"23) 1, 2, 4, 7, 11, ? ", a:["16","17","18","19"], c:0 },
+    { q:"24) 6, 11, 16, 21, ? ", a:["24","25","26","27"], c:2 },
+    { q:"25) 9, 17, 25, 33, ? ", a:["39","41","42","43"], c:1 },
+    { q:"26) 1, 4, 7, 10, ? ", a:["12","13","14","15"], c:1 },
+    { q:"27) 2, 5, 8, 11, ? ", a:["13","14","15","16"], c:0 },
+    { q:"28) 3, 9, 27, 81, ? ", a:["162","243","324","405"], c:1 },
+    { q:"29) 4, 6, 9, 13, ? ", a:["16","17","18","19"], c:2 },
+    { q:"30) 5, 12, 19, 26, ? ", a:["32","33","34","35"], c:1 },
+    { q:"31) 1, 5, 9, 13, ? ", a:["16","17","18","19"], c:2 },
+    { q:"32) 2, 8, 18, 32, ? ", a:["40","48","50","56"], c:1 },
+    { q:"33) 7, 14, 28, 56, ? ", a:["64","70","84","112"], c:3 },
+    { q:"34) 8, 16, 32, 64, ? ", a:["96","112","128","144"], c:2 },
+    { q:"35) 9, 18, 36, 72, ? ", a:["90","108","144","144"], c:2 },
+    { q:"36) 1, 3, 7, 15, ? ", a:["24","25","26","27"], c:1 },
+    { q:"37) 2, 6, 14, 30, ? ", a:["56","58","60","62"], c:0 },
+    { q:"38) 3, 12, 27, 48, ? ", a:["75","80","84","90"], c:2 },
+    { q:"39) 4, 20, 48, 88, ? ", a:["120","140","160","180"], c:2 },
+    { q:"40) 5, 25, 125, 625, ? ", a:["2500","3125","3750","4000"], c:1 },
+    { q:"41) 2, 5, 11, 23, ? ", a:["40","45","47","48"], c:2 },
+    { q:"42) 1, 4, 10, 22, ? ", a:["40","44","46","48"], c:1 },
+    { q:"43) 3, 6, 12, 24, ? ", a:["36","40","44","48"], c:3 },
+    { q:"44) 4, 9, 16, 25, ? ", a:["32","35","36","40"], c:2 },
+    { q:"45) 6, 12, 20, 30, ? ", a:["36","40","42","44"], c:1 },
+    { q:"46) 7, 14, 22, 31, ? ", a:["38","40","42","43"], c:3 },
+    { q:"47) 8, 17, 26, 35, ? ", a:["42","44","45","46"], c:2 },
+    { q:"48) 9, 19, 29, 39, ? ", a:["46","48","49","50"], c:3 },
+    { q:"49) 10, 21, 32, 43, ? ", a:["52","53","54","55"], c:1 },
+    { q:"50) 11, 23, 35, 47, ? ", a:["58","59","60","61"], c:2 }
+  ];
+
+  // 2) Mantiq testi (50 savol)
+  const logic = [
+    { q:"1) 1, 2, 3, 4, ? ", a:["5","6","7","8"], c:0 },
+    { q:"2) 2, 4, 6, 8, ? ", a:["9","10","11","12"], c:1 },
+    { q:"3) 5, 10, 15, 20, ? ", a:["21","22","23","25"], c:3 },
+    { q:"4) 1, 1, 2, 3, 5, ? ", a:["6","7","8","9"], c:0 },
+    { q:"5) 2, 4, 8, 16, ? ", a:["18","20","24","32"], c:3 },
+    { q:"6) 3, 6, 9, 12, ? ", a:["13","14","15","16"], c:2 },
+    { q:"7) 4, 8, 12, 16, ? ", a:["18","20","22","24"], c:1 },
+    { q:"8) 5, 8, 12, 17, ? ", a:["21","22","23","24"], c:0 },
+    { q:"9) 6, 11, 16, 21, ? ", a:["24","25","26","27"], c:2 },
+    { q:"10) 7, 14, 21, 28, ? ", a:["30","32","34","35"], c:3 },
+    { q:"11) 8, 16, 32, 64, ? ", a:["96","112","128","144"], c:2 },
+    { q:"12) 9, 18, 36, 72, ? ", a:["90","108","144","144"], c:2 },
+    { q:"13) 1, 3, 6, 10, ? ", a:["13","14","15","16"], c:1 },
+    { q:"14) 2, 5, 8, 11, ? ", a:["13","14","15","16"], c:0 },
+    { q:"15) 3, 9, 27, 81, ? ", a:["162","243","324","405"], c:1 },
+    { q:"16) 4, 6, 9, 13, ? ", a:["16","17","18","19"], c:2 },
+    { q:"17) 5, 12, 19, 26, ? ", a:["32","33","34","35"], c:1 },
+    { q:"18) 6, 12, 20, 30, ? ", a:["36","40","42","44"], c:1 },
+    { q:"19) 7, 14, 22, 31, ? ", a:["38","40","42","43"], c:3 },
+    { q:"20) 8, 17, 26, 35, ? ", a:["42","44","45","46"], c:2 },
+    { q:"21) 9, 19, 29, 39, ? ", a:["46","48","49","50"], c:3 },
+    { q:"22) 10, 21, 32, 43, ? ", a:["52","53","54","55"], c:1 },
+    { q:"23) 11, 23, 35, 47, ? ", a:["58","59","60","61"], c:2 },
+    { q:"24) 12, 24, 36, 48, ? ", a:["60","62","64","66"], c:0 },
+    { q:"25) 13, 26, 39, 52, ? ", a:["63","64","65","66"], c:0 },
+    { q:"26) 14, 28, 42, 56, ? ", a:["70","72","74","76"], c:0 },
+    { q:"27) 15, 30, 45, 60, ? ", a:["70","75","80","85"], c:1 },
+    { q:"28) 16, 32, 48, 64, ? ", a:["72","76","80","96"], c:3 },
+    { q:"29) 17, 34, 51, 68, ? ", a:["82","85","86","87"], c:1 },
+    { q:"30) 18, 36, 54, 72, ? ", a:["84","86","88","90"], c:0 },
+    { q:"31) 19, 38, 57, 76, ? ", a:["92","94","96","98"], c:2 },
+    { q:"32) 20, 40, 60, 80, ? ", a:["90","95","100","110"], c:2 },
+    { q:"33) 21, 42, 63, 84, ? ", a:["98","100","102","104"], c:0 },
+    { q:"34) 22, 44, 66, 88, ? ", a:["100","102","104","106"], c:1 },
+    { q:"35) 23, 46, 69, 92, ? ", a:["110","112","114","116"], c:0 },
+    { q:"36) 24, 48, 72, 96, ? ", a:["108","112","116","120"], c:3 },
+    { q:"37) 25, 50, 75, 100, ? ", a:["120","125","130","135"], c:1 },
+    { q:"38) 26, 52, 78, 104, ? ", a:["120","124","128","132"], c:1 },
+    { q:"39) 27, 54, 81, 108, ? ", a:["120","126","132","138"], c:1 },
+    { q:"40) 28, 56, 84, 112, ? ", a:["120","124","128","132"], c:2 },
+    { q:"41) 29, 58, 87, 116, ? ", a:["142","144","146","148"], c:1 },
+    { q:"42) 30, 60, 90, 120, ? ", a:["140","150","160","170"], c:1 },
+    { q:"43) 31, 62, 93, 124, ? ", a:["150","155","160","165"], c:1 },
+    { q:"44) 32, 64, 96, 128, ? ", a:["150","160","170","180"], c:3 },
+    { q:"45) 33, 66, 99, 132, ? ", a:["150","160","165","168"], c:2 },
+    { q:"46) 34, 68, 102, 136, ? ", a:["160","170","172","176"], c:2 },
+    { q:"47) 35, 70, 105, 140, ? ", a:["150","160","170","175"], c:3 },
+    { q:"48) 36, 72, 108, 144, ? ", a:["150","160","170","180"], c:3 },
+    { q:"49) 37, 74, 111, 148, ? ", a:["160","170","180","190"], c:3 },
+    { q:"50) 38, 76, 114, 152, ? ", a:["160","170","180","190"], c:2 }
+  ];
+
+  // 3) Shaxsiylik testi (50 savol) — Big Five (oddiy)
+  const personality = [
+    { q:"1) Men odamlar bilan oson muloqot qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"2) Men stress holatida tez charchayman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"3) Men yangi narsalarni o‘rganishni yoqtiraman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"4) Men ko‘pincha reja tuzaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"5) Men boshqalar bilan oson do‘stlashaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"6) Men oson xafa bo‘laman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"7) Men o‘zimni ishonchli his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"8) Men boshqalarni tez o‘ylab chiqaraman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"9) Men muammolarni mantiqiy hal qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"10) Men odatda tinch va sabrli bo‘laman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"11) Men boshqalar bilan hamkorlikda ishlashni yoqtiraman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"12) Men o‘zimni tez-tez tanqid qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"13) Men ijodiy fikrlayman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"14) Men ko‘pincha tashvishlanaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"15) Men ko‘p ishlashni yoqtiraman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"16) Men ko‘pincha boshqalar fikrini hurmat qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"17) Men tez qaror qila olaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"18) Men yangi narsalarni sinab ko‘rishni yoqtiraman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"19) Men ko‘pincha xayolga ketaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"20) Men boshqalar bilan oson ish olib boraman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"21) Men ko‘pincha o‘zimni o‘ylab qolaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"22) Men ko‘pincha optimistik bo‘laman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"23) Men ko‘pincha boshqalar bilan muammosiz muloqot qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"24) Men odatda tartibli bo‘laman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"25) Men ko‘pincha yangi fikrlar bilan kelaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"26) Men ko‘pincha o‘zimni oson yo‘qotib qo‘yam", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"27) Men ko‘pincha boshqalarni tinglayman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"28) Men ko‘pincha hissiyotlarimni nazorat qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"29) Men ko‘pincha o‘zimni ishonchsiz his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"30) Men ko‘pincha o‘zimga ishonaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"31) Men ko‘pincha muammolarni tez hal qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"32) Men ko‘pincha boshqalar bilan hamkorlik qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"33) Men ko‘pincha hissiyotlarimni boshqara olmayman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"34) Men ko‘pincha o‘zimni tinch his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"35) Men ko‘pincha o‘zimni baxtli his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"36) Men ko‘pincha boshqalar bilan oson muomala qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"37) Men ko‘pincha yangi narsalarni o‘rganishga tayyorman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"38) Men ko‘pincha o‘zimni kuchli his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"39) Men ko‘pincha boshqalarni oson tushunaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"40) Men ko‘pincha o‘zimni yomon his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"41) Men ko‘pincha boshqalar bilan do‘st bo‘laman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"42) Men ko‘pincha o‘zimni yolg‘iz his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"43) Men ko‘pincha o‘zimni kuchsiz his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"44) Men ko‘pincha o‘zimni ishonchli his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"45) Men ko‘pincha o‘zimni tinch his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"46) Men ko‘pincha o‘zimni o‘ylab qolaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:1 },
+    { q:"47) Men ko‘pincha boshqalarni hurmat qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"48) Men ko‘pincha o‘zimni kuchli his qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"49) Men ko‘pincha yangi fikrlar bilan kelaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 },
+    { q:"50) Men ko‘pincha boshqalar bilan oson muomala qilaman.", a:["Juda to‘g‘ri","To‘g‘ri","Qisman","Hech to‘g‘ri emas"], c:0 }
+  ];
+
+  // 4) Vaziyatli etika testi (20 savol)
+  const ethics = [
+    { q:"1) Ko‘chada kimdir pulini yo‘qotib qo‘ydi. Siz nima qilasiz?", a:["Pulni olib qo‘yaman", "Politsiyaga topshiraman", "Odamni chaqirib beraman", "Hech narsa qilmayman"], c:1 },
+    { q:"2) Ishda hamkasbingiz noto‘g‘ri ish qilmoqda. Siz nima qilasiz?", a:["Hech narsa demayman", "Rahbarga aytaman", "Uni qo‘llab-quvvatlayman", "Boshqalar bilan gaplashaman"], c:1 },
+    { q:"3) Siz jamoada ishlaysiz, kimdir vazifani bajarmadi. Siz nima qilasiz?", a:["Uni tanqid qilaman", "Yordam beraman", "Uni o‘zgartiraman", "Hech narsa qilmayman"], c:1 },
+    { q:"4) Ko‘cha kesib o‘tmoqchisiz, yo‘l belgilari buzilgan. Siz nima qilasiz?", a:["Tez o‘taman", "Kutib o‘taman", "Boshqalarga yordam beraman", "Hech narsa qilmayman"], c:1 },
+    { q:"5) Do‘stingiz sizga qarshi gapirdi. Siz nima qilasiz?", a:["Unga qarshi javob beraman", "Sokin muomala qilaman", "Uni kechiraman", "Uni e’tiborsiz qoldiraman"], c:2 },
+    { q:"6) Siz ishda xato qildingiz. Siz nima qilasiz?", a:["Yashirib qo‘yam", "Rahbarga aytaman", "Boshqalar aybdor", "Hech narsa qilmayman"], c:1 },
+    { q:"7) Kimdir sizga yordam so‘radi, lekin siz band edingiz. Siz nima qilasiz?", a:["Yordam bermayman", "Keyinroq yordam beraman", "Darhol yordam beraman", "Boshqasini topaman"], c:1 },
+    { q:"8) Yo‘l-transport hodisasi bo‘ldi. Siz nima qilasiz?", a:["O‘z yo‘limda davom etaman", "Yordam beraman", "Videoga olaman", "Boshqalarni chaqiraman"], c:1 },
+    { q:"9) Siz kimningdir narsasini topdingiz, u esa qimmatbaho. Siz nima qilasiz?", a:["O‘zimga olaman", "Politsiyaga beraman", "Egasi topilguncha saqlayman", "Hech narsa qilmayman"], c:1 },
+    { q:"10) Sizga katta pul berishsa, lekin qonuniy emas. Siz nima qilasiz?", a:["Qabul qilaman", "Rad qilaman", "Boshqaga beraman", "Hech narsa qilmayman"], c:1 },
+    { q:"11) Siz ish joyida adolatsizlikni ko‘rdingiz. Siz nima qilasiz?", a:["Hech narsa qilmayman", "Rahbarga aytaman", "O‘zingiz o‘zgartirasiz", "Boshqalar bilan bahslashasiz"], c:1 },
+    { q:"12) Siz jamoada yolg‘on gapirganni bildingiz. Siz nima qilasiz?", a:["Uni himoya qilaman", "To‘g‘risini aytaman", "Boshqalar bilan gaplashaman", "Hech narsa qilmayman"], c:1 },
+    { q:"13) Siz ko‘chada tartibsizlik ko‘rdingiz. Siz nima qilasiz?", a:["Hech narsa qilmayman", "Tartibni tiklashga yordam beraman", "Boshqalarni chaqiraman", "Videoga olaman"], c:1 },
+    { q:"14) Sizga kimdir xato qilib yubordi. Siz nima qilasiz?", a:["Jasorat bilan gaplashaman", "Sokin muomala qilaman", "Uning xatosini kechiraman", "Boshqalarni ayblayman"], c:1 },
+    { q:"15) Siz yo‘l belgisini buzganini ko‘rdingiz. Siz nima qilasiz?", a:["Hech narsa qilmayman", "Ogohlantiraman", "Politsiyaga aytaman", "Videoga olaman"], c:1 },
+    { q:"16) Siz kimningdir mol-mulkini shikastlandirdingiz. Siz nima qilasiz?", a:["Yashirib qo‘yam", "To‘lov qilib beraman", "Boshqalarni ayblayman", "Hech narsa qilmayman"], c:1 },
+    { q:"17) Siz kimnidir haqorat qilganini ko‘rdingiz. Siz nima qilasiz?", a:["Hech narsa qilmayman", "Ogohlantiraman", "Boshqalarni chaqiraman", "Uni himoya qilaman"], c:1 },
+    { q:"18) Sizda kimdir sirini aytib qo‘ydi. Siz nima qilasiz?", a:["Sirni saqlayman", "Boshqalarga aytaman", "O‘zingizga olib qolaman", "Hech narsa qilmayman"], c:0 },
+    { q:"19) Siz ishda o‘zingizni noto‘g‘ri tutdingiz. Siz nima qilasiz?", a:["Yashirib qo‘yam", "Rahbarga aytaman", "Boshqalarni ayblayman", "Hech narsa qilmayman"], c:1 },
+    { q:"20) Siz kimdir yordam so‘radi, lekin siz bilmasangiz. Siz nima qilasiz?", a:["Hech narsa qilmayman", "Bilgan odamni topaman", "O‘zim bilib yordam beraman", "Boshqalar bilan maslahat qilaman"], c:1 }
+  ];
+
+  let currentTest = [];
+  let currentIndex = 0;
+  let correct = 0;
+  let wrong = [];
+  let totalQ = 0;
+
+  function startTest(testName){
+    document.getElementById("menu").classList.add("hide");
+    document.getElementById("result").classList.add("hide");
+    document.getElementById("test").classList.remove("hide");
+
+    currentTest = testName === "attention" ? attention :
+                  testName === "logic" ? logic :
+                  testName === "personality" ? personality : ethics;
+
+    currentIndex = 0;
+    correct = 0;
+    wrong = [];
+    totalQ = currentTest.length;
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    const q = currentTest[currentIndex];
+    document.getElementById("qnum").innerText = `Savol ${currentIndex+1} / ${totalQ}`;
+    document.getElementById("question").innerText = q.q;
+
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.a.forEach((ans, idx) => {
+      const btn = document.createElement("button");
+      btn.innerText = ans;
+      btn.onclick = () => checkAnswer(idx);
+      answersDiv.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(ansIdx){
+    const q = currentTest[currentIndex];
+
+    if(ansIdx === q.c){
+      correct++;
+    } else {
+      wrong.push({
+        q: q.q,
+        correct: q.a[q.c],
+        user: q.a[ansIdx]
+      });
+    }
+
+    currentIndex++;
+
+    if(currentIndex >= totalQ){
+      showResult();
+    } else {
+      showQuestion();
+    }
+  }
+
+  function showResult(){
+    document.getElementById("test").classList.add("hide");
+    document.getElementById("result").classList.remove("hide");
+
+    const percent = Math.round((correct/totalQ)*100);
+    document.getElementById("score").innerHTML = `To‘g‘ri javoblar: <b>${correct}</b> / ${totalQ}`;
+    document.getElementById("percent").innerHTML = `Foiz: <b>${percent}%</b>`;
+
+    let wrongHTML = "<h3>Xatolar:</h3><ul>";
+    wrong.forEach(w => {
+      wrongHTML += `<li class="wrong">Savol: ${w.q}<br>Siz: ${w.user} | To‘g‘ri: ${w.correct}</li>`;
+    });
+    wrongHTML += "</ul>";
+
+    document.getElementById("wrongList").innerHTML = wrongHTML;
+  }
+
+  function resetAll(){
+    document.getElementById("result").classList.add("hide");
+    document.getElementById("menu").classList.remove("hide");
+  }
+</script>
+
+</body>
+</html>
+ <button id="finishBtn">Testni tugatish</button>
